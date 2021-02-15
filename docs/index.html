@@ -13,10 +13,17 @@
       crossorigin="anonymous"
     />
     <style>
-      #pushstart {
+      .stars {
         background: url(res/img/png/stars.png);
         background-repeat: repeat;
-        background-size: auto;
+        /* background-size: cover; */
+        background-position: center;
+        width: 100% !important;
+        height: 100% !important;
+        position: absolute;
+      }
+
+      #pushstart {
         position: absolute;
         left: 0px;
         right: 0px;
@@ -24,21 +31,23 @@
         top: 0px;
         z-index: 1;
       }
-      .box {
-        position: absolute;
-        left: 1%;
-        right: 1%;
-        top: 0px;
-        bottom: 0px;
-        margin: 0 auto;
-      }
 
-      @media screen and (max-width: 10vw) {
+      @media (min-width: 768px) {
         .box {
+          position: absolute !important;
+          left: 1%;
+          right: 1%;
+          top: 0px;
+          bottom: 0px;
+          height: 100%;
           margin: 0 auto;
-          width: 100% !important;
+        }
+      }
+      @media (max-width: 768px) {
+        .box {
+          position: relative !important;
+          width: 100%;
           height: auto !important;
-          position: relative;
         }
       }
     </style>
@@ -46,20 +55,18 @@
   </head>
   <body>
     <div id="app">
-      <div
-        id="pushstart"
-        class="d-flex justify-content-center"
-        v-if="!isHidden"
-      >
-        <img
-          id="o1su"
-          class="box"
-          style="height: 100%"
-          @click="toggleHide"
-          src="res/img/gif/o1su.gif"
-          alt=""
-        />
-      </div>
+      <template v-if="!isHidden">
+        <div class="stars"></div>
+        <div id="pushstart" class="container-fluid" v-if="!isHidden">
+          <img
+            id="o1su"
+            class="box"
+            @click="toggleHide"
+            src="res/img/gif/o1su.gif"
+            alt=""
+          />
+        </div>
+      </template>
       <div v-if="isHidden">
         <h1 class="text-center">Rick Rolled</h1>
         <video autoplay src="res/vid/mp4/rickroll.mp4" width="100%"></video>
@@ -85,10 +92,12 @@
             console.log(
               `hr: ${hRatio} wr:${wRatio} cx:${calculatedX} cy:${calculatedY}`
             );
-            return calculatedX >= 1239 &&
+            return (
+              calculatedX >= 1239 &&
               calculatedX <= 1810 &&
               calculatedY >= 1849 &&
-              calculatedY <= 1921;
+              calculatedY <= 1921
+            );
           },
         },
       });
