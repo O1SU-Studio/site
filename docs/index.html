@@ -55,19 +55,14 @@
           id="o1su"
           class="box"
           style="height: 100%"
-          @click="isHidden = !isHidden"
+          @click="toggleHide"
           src="res/img/gif/o1su.gif"
           alt=""
         />
       </div>
-      <div>
-        <h1 v-if="isHidden" class="text-center">Rick Rolled</h1>
-        <video
-          v-if="isHidden"
-          autoplay
-          src="res/vid/mp4/rickroll.mp4"
-          width="100%"
-        ></video>
+      <div v-if="isHidden">
+        <h1 class="text-center">Rick Rolled</h1>
+        <video autoplay src="res/vid/mp4/rickroll.mp4" width="100%"></video>
       </div>
     </div>
     <script>
@@ -75,6 +70,26 @@
         el: "#app",
         data: {
           isHidden: false,
+        },
+        methods: {
+          toggleHide(e) {
+            if (this.checkPushStart(e)) {
+              this.isHidden = !this.isHidden;
+            }
+          },
+          checkPushStart(e) {
+            let hRatio = 2560 / e.view.innerHeight;
+            let wRatio = 3180 / e.view.innerWidth;
+            let calculatedX = wRatio * e.clientX;
+            let calculatedY = hRatio * e.clientY;
+            console.log(
+              `hr: ${hRatio} wr:${wRatio} cx:${calculatedX} cy:${calculatedY}`
+            );
+            return calculatedX >= 1239 &&
+              calculatedX <= 1810 &&
+              calculatedY >= 1849 &&
+              calculatedY <= 1921;
+          },
         },
       });
     </script>
